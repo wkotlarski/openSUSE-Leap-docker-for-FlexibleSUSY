@@ -1,0 +1,22 @@
+name: Docker build
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Docker build
+      run: |
+        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        docker build -t navir/wolframengine-opensuse:0.1.0 .
+        docker push navir/opensuseleap-for-flexiblesusy:0.1.0
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
