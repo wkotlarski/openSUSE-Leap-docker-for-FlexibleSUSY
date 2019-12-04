@@ -8,7 +8,7 @@ LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 RUN zypper dup --no-confirm --no-recommends
 
 RUN zypper in --no-confirm --no-recommends tar gzip wget git
-RUN zypper in --no-confirm --no-recommends make gcc-c++ gcc-fortran libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel
+RUN zypper in --no-confirm --no-recommends make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel
 
 # install Wolfram Engine
 RUN wget https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto -verbose && rm LINUX
