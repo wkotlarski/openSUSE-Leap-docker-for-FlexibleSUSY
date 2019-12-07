@@ -7,7 +7,8 @@ LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 # update the default image
 RUN zypper dup --no-confirm --no-recommends
 
-RUN zypper in --no-confirm --no-recommends tar gzip wget git
+# which is needed by FormCalc's compile script
+RUN zypper in --no-confirm --no-recommends tar gzip wget git which
 RUN zypper in --no-confirm --no-recommends make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel
 
 # install Wolfram Engine
@@ -19,6 +20,5 @@ RUN rpm -i /usr/local/Wolfram/WolframEngine/12.0/SystemFiles/Installation/wolfra
 # FlexibleSUSY extras
 
 # install LoopTools
-# install FeynArts
 # install FormCalc
 # install Collier
