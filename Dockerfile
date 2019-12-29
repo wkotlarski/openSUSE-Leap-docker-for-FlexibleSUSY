@@ -1,6 +1,6 @@
 FROM opensuse/leap:latest
 
-LABEL version = "0.1.1"
+LABEL version = "0.1.4"
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 
@@ -8,7 +8,7 @@ LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
-RUN zypper in --no-confirm --no-recommends tar gzip wget git which
+RUN zypper in --no-confirm --no-recommends glibc-locale tar gzip wget git which
 RUN zypper in --no-confirm --no-recommends make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel
 
 # install Wolfram Engine

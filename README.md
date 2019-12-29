@@ -1,10 +1,7 @@
 # opensuseleap-for-flexiblesusy
 
-```
-docker build -t navir/opensuseleap-for-flexiblesusy:0.0.1 .
-```
 
-run
+Running a docker image
 ```
 docker run -it navir/opensuseleap-for-flexiblesusy:0.0.1
 ```
