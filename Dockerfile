@@ -1,6 +1,6 @@
 FROM opensuse/leap:latest
 
-LABEL version = "0.1.4"
+LABEL version = "0.1.5"
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 
@@ -15,6 +15,8 @@ RUN zypper in --no-confirm --no-recommends make gcc-c++ gcc-fortran clang libboo
 RUN wget https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto -verbose && rm LINUX
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
+# intsalling this rpm tries to call xdm-mime
+RUN zypper in --no-confirm --no-recommends xdg-utils
 RUN rpm -i /usr/local/Wolfram/WolframEngine/12.0/SystemFiles/Installation/wolframscript-1.3-2019101401.x86_64.rpm
 
 # FlexibleSUSY extras
