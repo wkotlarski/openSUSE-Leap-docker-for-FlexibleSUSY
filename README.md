@@ -1,4 +1,4 @@
-![](https://github.com/wkotlarski/opensuseleap-for-flexiblesusy/build/badge.svg?branch=main)
+![](https://github.com/wkotlarski/opensuseleap-for-flexiblesusy/workflows/build/badge.svg?branch=master)
 
 # opensuseleap-for-flexiblesusy
 
