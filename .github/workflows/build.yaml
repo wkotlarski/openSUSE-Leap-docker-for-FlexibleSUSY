@@ -11,7 +11,7 @@ jobs:
 
       - name: Docker build and push
         run: |
-          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker build -t navir/opensuseleap-for-flexiblesusy -t navir/opensuseleap-for-flexiblesusy:0.2.0 .
           docker push navir/opensuseleap-for-flexiblesusy:0.2.0
           docker push navir/opensuseleap-for-flexiblesusy
