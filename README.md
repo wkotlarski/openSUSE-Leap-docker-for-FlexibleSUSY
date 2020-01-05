@@ -1,3 +1,5 @@
+![](https://github.com/wkotlarski/opensuseleap-for-flexiblesusy/build/badge.svg?branch=main)
+
 # opensuseleap-for-flexiblesusy
 
 
