@@ -26,6 +26,9 @@ RUN zypper in --no-recommend --no-confirm python3-pip
 RUN pip install conan
 RUN conan remote add conan-hep https://api.bintray.com/conan/expander/conan-hep
 
+# Himalaya needs cmake
+RUN zypper in --no-recommends --no-confirm cmake
+
 # install LoopTools
 # install FormCalc
 # install Collier
