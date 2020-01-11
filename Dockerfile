@@ -25,6 +25,9 @@ RUN rpm -i /usr/local/Wolfram/WolframEngine/12.0/SystemFiles/Installation/wolfra
 RUN zypper in --no-recommend --no-confirm python3-pip
 RUN pip install conan
 RUN conan remote add conan-hep https://api.bintray.com/conan/expander/conan-hep
+RUN mkdir $HOME/.conan/profiles
+COPY g++ $HOME/.conan/profiles
+COPY clang++ $HOME/.conan/profiles
 
 # Himalaya needs cmake
 RUN zypper in --no-recommends --no-confirm cmake
