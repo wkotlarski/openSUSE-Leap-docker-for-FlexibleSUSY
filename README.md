@@ -2,9 +2,18 @@
 
 # opensuseleap-for-flexiblesusy
 
-
-Running a docker image
+Pull image tagged latest (latest is always the default tag)
 ```
-docker run -it navir/opensuseleap-for-flexiblesusy:0.0.1
+docker pull navir/opensuseleap-for-flexiblesusy
+```
+
+List pulled images
+```
+docker images
+```
+
+Running a docker image tagged latest
+```
+docker run -it navir/opensuseleap-for-flexiblesusy
 ```
 
