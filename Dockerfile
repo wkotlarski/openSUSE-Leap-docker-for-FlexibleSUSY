@@ -33,9 +33,9 @@ RUN mkdir /root/.conan/profiles
 COPY g++ /root/.conan/profiles/g++
 COPY clang++ /root/.conan/profiles/clang++
 
-# Himalaya needs cmake
+# Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
 
-# install LoopTools
-# install FormCalc
 # install Collier
+RUN wget -q -O - https://collier.hepforge.org/downloads/collier-1.2.4.tar.gz | tar -xzf - && mv COLLIER-* COLLIER
+RUN cd COLLIER/build && cmake .. && make && make install
