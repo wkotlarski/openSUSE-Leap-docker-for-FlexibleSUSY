@@ -37,5 +37,6 @@ COPY clang++ /root/.conan/profiles/clang++
 RUN zypper in --no-recommends --no-confirm cmake
 
 # install Collier
+# FS interface to Collier requires it to be compiled into static library
 RUN wget -q -O - https://collier.hepforge.org/downloads/collier-1.2.4.tar.gz | tar -xzf - && mv COLLIER-* COLLIER
-RUN cd COLLIER/build && cmake .. && make && make install
+RUN cd COLLIER/build && cmake -Dstatic=ON .. && make && make install
