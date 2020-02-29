@@ -40,3 +40,7 @@ RUN zypper in --no-recommends --no-confirm cmake
 # FS interface to Collier requires it to be compiled into static library
 RUN wget -q -O - https://collier.hepforge.org/downloads/collier-1.2.4.tar.gz | tar -xzf - && mv COLLIER-* COLLIER
 RUN cd COLLIER/build && cmake -Dstatic=ON .. && make && make install
+
+# some tests require numdiff which is not in openSUSE package repo
+RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
+RUN cd /tmp/numdiff-5.9.0 && ./configure && make && make install
