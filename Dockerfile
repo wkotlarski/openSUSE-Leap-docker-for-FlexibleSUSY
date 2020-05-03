@@ -26,12 +26,12 @@ RUN rpm -i /usr/local/Wolfram/WolframEngine/12.1/SystemFiles/Installation/wolfra
 # FlexibleSUSY extras
 
 # conan
-RUN zypper in --no-recommend --no-confirm python3-pip
-RUN pip install conan
-RUN conan remote add conan-hep https://api.bintray.com/conan/expander/conan-hep
-RUN mkdir /root/.conan/profiles
-COPY g++ /root/.conan/profiles/g++
-COPY clang++ /root/.conan/profiles/clang++
+# RUN zypper in --no-recommend --no-confirm python3-pip
+# RUN pip install conan
+# RUN conan remote add conan-hep https://api.bintray.com/conan/expander/conan-hep
+# RUN mkdir /root/.conan/profiles
+# COPY g++ /root/.conan/profiles/g++
+# COPY clang++ /root/.conan/profiles/clang++
 
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
