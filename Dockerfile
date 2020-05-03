@@ -21,7 +21,7 @@ RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/L
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # intsalling this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-RUN rpm -i /usr/local/Wolfram/WolframEngine/12.0/SystemFiles/Installation/wolframscript-1.3-2019101401.x86_64.rpm
+RUN rpm -i /usr/local/Wolfram/WolframEngine/12.1/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 # FlexibleSUSY extras
 
