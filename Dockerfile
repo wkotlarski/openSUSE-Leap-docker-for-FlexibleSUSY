@@ -46,3 +46,6 @@ RUN rm -r COLLIER-1.2.4
 RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
 RUN cd /tmp/numdiff-5.9.0 && ./configure && make && make install
 RUN rm -r /tmp/numdiff-5.9.0
+
+# extra packages required by tests
+RUN zypper in --no-recommends --no-confirm bc
