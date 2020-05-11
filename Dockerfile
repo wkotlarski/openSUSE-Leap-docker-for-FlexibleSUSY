@@ -17,6 +17,7 @@ RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboo
 
 # install Wolfram Engine
 RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto && rm LINUX
+ENV PATH="/usr/local/Wolfram/WolframEngine/12.1/Executables:${PATH}"
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # intsalling this rpm tries to call xdm-mime
