@@ -1,7 +1,10 @@
-FROM opensuse/leap:latest
+FROM opensuse/leap:15.2
 
 ARG BUILD_DATE
 ARG VERSION
+
+ENV SARAH_VERSION 4.14.3
+ENV FEYNARTS_VERSION 3.11
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -24,15 +27,16 @@ ENV PATH="/usr/local/Wolfram/WolframEngine/12.1/Executables:${PATH}"
 RUN zypper in --no-confirm --no-recommends xdg-utils
 RUN rpm -i /usr/local/Wolfram/WolframEngine/12.1/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
-# FlexibleSUSY extras
+# install SARAH
+RUN wget -q -O - https://sarah.hepforge.org/downloads/SARAH-${SARAH_VERSION}.tar.gz | tar -xzf -
+RUN mkdir -p /root/.WolframEngine/Kernel
+RUN echo "AppendTo[\$Path, \"/SARAH-${SARAH_VERSION}\"];" > /root/.WolframEngine/Kernel/init.m
 
-# conan
-# RUN zypper in --no-recommend --no-confirm python3-pip
-# RUN pip install conan
-# RUN conan remote add conan-hep https://api.bintray.com/conan/expander/conan-hep
-# RUN mkdir /root/.conan/profiles
-# COPY g++ /root/.conan/profiles/g++
-# COPY clang++ /root/.conan/profiles/clang++
+# install FeynArts
+RUN wget -q -O - http://www.feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
+RUN echo "AppendTo[\$Path, \"/FeynArts-${FEYNARTS_VERSION}\"];" > /root/.WolframEngine/Kernel/init.m
+
+# FlexibleSUSY extras
 
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
