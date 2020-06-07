@@ -34,7 +34,7 @@ RUN echo "AppendTo[\$Path, \"/SARAH-${SARAH_VERSION}\"];" > /root/.WolframEngine
 
 # install FeynArts
 RUN wget -q -O - http://www.feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
-RUN echo "AppendTo[\$Path, \"/FeynArts-${FEYNARTS_VERSION}\"];" > /root/.WolframEngine/Kernel/init.m
+RUN echo "AppendTo[\$Path, \"/FeynArts-${FEYNARTS_VERSION}\"];" >> /root/.WolframEngine/Kernel/init.m
 
 # FlexibleSUSY extras
 
