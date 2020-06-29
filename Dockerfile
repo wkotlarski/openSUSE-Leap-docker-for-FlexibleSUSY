@@ -5,6 +5,7 @@ ARG VERSION
 
 ENV SARAH_VERSION 4.14.3
 ENV FEYNARTS_VERSION 3.11
+ENV HIMALAYA_VERSION 4.0.0
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -44,8 +45,20 @@ RUN zypper in --no-recommends --no-confirm cmake
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
 RUN wget -q -O - https://collier.hepforge.org/downloads/collier-1.2.4.tar.gz | tar -xzf -
+# Collier cannot be compiled in parallel
 RUN cd COLLIER-1.2.4/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/COLLIER .. && make && make install
 RUN rm -r COLLIER-1.2.4
+
+# install Himalaya
+RUN wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
+RUN mkdir -p Himalaya-${HIMALAYA_VERSION}/build
+# there's a bug FindMathematica.cmake. We need libuuid-devel
+RUN zypper in --no-recommends --no-confirm libuuid-devel
+# without EIGEN3_INCLUDE_DIR cmake will not find Eigen3 if we also specify minimal version required
+RUN cd Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-g++ -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r Himalaya-${HIMALAYA_VERSION}/build/*
+RUN cd Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-clang++ -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r Himalaya-${HIMALAYA_VERSION}
 
 # some tests require numdiff which is not in openSUSE package repo
 RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
