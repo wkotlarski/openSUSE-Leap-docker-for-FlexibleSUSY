@@ -67,3 +67,4 @@ RUN rm -r /tmp/numdiff-5.9.0
 
 # extra packages required by tests
 RUN zypper in --no-recommends --no-confirm bc
+
