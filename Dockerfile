@@ -6,6 +6,7 @@ ARG VERSION
 ENV SARAH_VERSION 4.14.3
 ENV FEYNARTS_VERSION 3.11
 ENV HIMALAYA_VERSION 4.0.0
+ENV LOOPTOOLS_VERSION 2.15
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -33,14 +34,24 @@ RUN wget -q -O - https://sarah.hepforge.org/downloads/SARAH-${SARAH_VERSION}.tar
 RUN mkdir -p /root/.WolframEngine/Kernel
 RUN echo "AppendTo[\$Path, \"/SARAH-${SARAH_VERSION}\"];" > /root/.WolframEngine/Kernel/init.m
 
+# FlexibleSUSY extras
+
 # install FeynArts
 RUN wget -q -O - http://www.feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
 RUN echo "AppendTo[\$Path, \"/FeynArts-${FEYNARTS_VERSION}\"];" >> /root/.WolframEngine/Kernel/init.m
 
-# FlexibleSUSY extras
-
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
+
+# install LoopTools
+
+RUN wget -q http://www.feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/LoopTools-g++ && make && make install
+RUN rm -r LoopTools-${LOOPTOOLS_VERSION}
+RUN tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/LoopTools-clang++ && make && make install
+RUN rm LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
