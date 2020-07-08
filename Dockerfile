@@ -7,6 +7,7 @@ ENV SARAH_VERSION 4.14.3
 ENV FEYNARTS_VERSION 3.11
 ENV HIMALAYA_VERSION 4.0.0
 ENV LOOPTOOLS_VERSION 2.15
+ENV COLLIER_VERSION 1.2.5
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -55,10 +56,10 @@ RUN rm LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
-RUN wget -q -O - https://collier.hepforge.org/downloads/collier-1.2.4.tar.gz | tar -xzf -
+RUN wget -q -O - https://collier.hepforge.org/downloads/collier-${COLLIER_VERSION}.tar.gz | tar -xzf -
 # Collier cannot be compiled in parallel
-RUN cd COLLIER-1.2.4/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/COLLIER .. && make && make install
-RUN rm -r COLLIER-1.2.4
+RUN cd collier-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/COLLIER .. && make && make install
+RUN rm -r collier-${COLLIER_VERSION}
 
 # install Himalaya
 RUN wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
