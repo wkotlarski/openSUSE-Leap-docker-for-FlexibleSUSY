@@ -18,7 +18,7 @@ LABEL build-date = $BUILD_DATE
 RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
-RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim
+RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs
 RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel sqlite3-devel
 
 # install Wolfram Engine
