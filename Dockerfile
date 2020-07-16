@@ -22,6 +22,8 @@ RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git 
 RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel sqlite3-devel
 
 # install Wolfram Engine
+# Wolfram Engine > 12.1.1 requires xz
+RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto && rm LINUX
 ENV PATH="/usr/local/Wolfram/WolframEngine/12.1/Executables:${PATH}"
 
