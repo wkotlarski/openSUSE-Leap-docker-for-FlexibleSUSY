@@ -28,7 +28,7 @@ RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/L
 ENV PATH="/usr/local/Wolfram/WolframEngine/12.1/Executables:${PATH}"
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
-# intsalling this rpm tries to call xdm-mime
+# installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
 RUN rpm -i /usr/local/Wolfram/WolframEngine/12.1/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
@@ -43,11 +43,7 @@ RUN echo "AppendTo[\$Path, \"/SARAH-${SARAH_VERSION}\"];" > /root/.WolframEngine
 RUN wget -q -O - http://www.feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
 RUN echo "AppendTo[\$Path, \"/FeynArts-${FEYNARTS_VERSION}\"];" >> /root/.WolframEngine/Kernel/init.m
 
-# Himalaya and Collier need cmake
-RUN zypper in --no-recommends --no-confirm cmake
-
 # install LoopTools
-
 RUN wget -q http://www.feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/LoopTools-g++ && make && make install
@@ -55,6 +51,9 @@ RUN rm -r LoopTools-${LOOPTOOLS_VERSION}
 RUN tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/LoopTools-clang++ && make && make install
 RUN rm LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+
+# Himalaya and Collier need cmake
+RUN zypper in --no-recommends --no-confirm cmake
 
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
