@@ -50,7 +50,7 @@ RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FFLAGS=-fPIC CFLAGS=-fPI
 RUN rm -r LoopTools-${LOOPTOOLS_VERSION}
 RUN tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/LoopTools-clang++ && make && make install
-RUN rm LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN rm -r LoopTools-${LOOPTOOLS_VERSION}*
 
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
