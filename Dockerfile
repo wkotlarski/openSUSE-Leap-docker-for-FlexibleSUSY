@@ -8,6 +8,7 @@ ENV FEYNARTS_VERSION 3.11
 ENV HIMALAYA_VERSION 4.0.0
 ENV LOOPTOOLS_VERSION 2.15
 ENV COLLIER_VERSION 1.2.5
+ENV MATH_VERSION 12.2
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -25,12 +26,12 @@ RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboo
 # Wolfram Engine > 12.1.1 requires xz
 RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto && rm LINUX
-ENV PATH="/usr/local/Wolfram/WolframEngine/12.1/Executables:${PATH}"
+ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-RUN rpm -i /usr/local/Wolfram/WolframEngine/12.1/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 # install SARAH
 RUN wget -q -O - https://sarah.hepforge.org/downloads/SARAH-${SARAH_VERSION}.tar.gz | tar -xzf -
