@@ -20,7 +20,10 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs
-RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN zypper in --no-recommends --no-confirm make gcc10-c++ gcc10-fortran clang libboost_headers1_66_0-devel libboost_test1_66_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-10 100
 
 # install Wolfram Engine
 # Wolfram Engine > 12.1.1 requires xz
