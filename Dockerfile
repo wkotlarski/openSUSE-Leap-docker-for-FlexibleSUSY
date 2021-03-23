@@ -61,29 +61,29 @@ RUN zypper in --no-recommends --no-confirm cmake
 
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
-RUN wget -q -O - https://collier.hepforge.org/downloads/collier-${COLLIER_VERSION}.tar.gz | tar -xzf -
+RUN cd /tmp && wget -q -O - https://collier.hepforge.org/downloads/collier-${COLLIER_VERSION}.tar.gz | tar -xzf -
 # Collier cannot be compiled in parallel
-RUN cd COLLIER-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/COLLIER .. && make && make install
-RUN rm -r COLLIER-${COLLIER_VERSION}
+RUN cd /tmp/COLLIER-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/COLLIER .. && make && make install
+RUN rm -r /tmp/COLLIER-${COLLIER_VERSION}
 
 # install Himalaya
-RUN wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
-RUN mkdir -p Himalaya-${HIMALAYA_VERSION}/build
+RUN cd /tmp && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
+RUN mkdir -p /tmp/Himalaya-${HIMALAYA_VERSION}/build
 # there's a bug FindMathematica.cmake. We need libuuid-devel
 RUN zypper in --no-recommends --no-confirm libuuid-devel
 # without EIGEN3_INCLUDE_DIR cmake will not find Eigen3 if we also specify minimal version required
-RUN cd Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-g++ -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r Himalaya-${HIMALAYA_VERSION}/build/*
-RUN cd Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-clang++ -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r Himalaya-${HIMALAYA_VERSION}
+RUN cd /tmp/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-g++ -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/Himalaya-${HIMALAYA_VERSION}/build/*
+RUN cd /tmp/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/Himalaya-clang++ -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/Himalaya-${HIMALAYA_VERSION}
 
 # install GM2Calc
-RUN wget -q -O - https://github.com/GM2Calc/GM2Calc/archive/v${GM2Calc_VERSION}.tar.gz | tar -xzf -
-RUN mkdir GM2Calc-${GM2Calc_VERSION}/build
-RUN cd GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/GM2Calc-g++ -DCMAKE_CXX_COMPILER=g++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r GM2Calc-${GM2Calc_VERSION}/build && mkdir GM2Calc-${GM2Calc_VERSION}/build
-RUN cd GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/GM2Calc-clang++ -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r GM2Calc-${GM2Calc_VERSION}
+RUN cd /tmp && wget -q -O - https://github.com/GM2Calc/GM2Calc/archive/v${GM2Calc_VERSION}.tar.gz | tar -xzf -
+RUN mkdir /tmp/GM2Calc-${GM2Calc_VERSION}/build
+RUN cd /tmp/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/GM2Calc-g++ -DCMAKE_CXX_COMPILER=g++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}/build && mkdir /tmp/GM2Calc-${GM2Calc_VERSION}/build
+RUN cd /tmp/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/GM2Calc-clang++ -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}
 
 # some tests require numdiff which is not in openSUSE package repo
 RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
