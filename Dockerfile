@@ -85,6 +85,10 @@ RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}/build && mkdir /tmp/GM2Calc-${GM2Calc_
 RUN cd /tmp/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/GM2Calc-clang++ -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}
 
+# instal TSIL
+RUN wget -q -O - http://www.niu.edu/spmartin/TSIL/tsil-1.45.tar.gz | tar -xzf -
+RUN cd /tsil-1.45 && make -j2
+
 # some tests require numdiff which is not in openSUSE package repo
 RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
 RUN cd /tmp/numdiff-5.9.0 && ./configure && make && make install
