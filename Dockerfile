@@ -92,8 +92,8 @@ RUN cd /tmp && tar -xf tsil-${TSIL_VERSION}.tar.gz
 RUN cp -r /tmp/tsil-${TSIL_VERSION} /tsil-clang++
 RUN cp -r /tmp/tsil-${TSIL_VERSION} /tsil-g++
 RUN rm -r /tmp/tsil-${TSIL_VERSION}*
-RUN cd /tsil-clang++ && make CC=clang
-RUN cd /tsil-g++ && make CC=gcc
+RUN cd /tsil-clang++ && make CC=clang CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
+RUN cd /tsil-g++ && make CC=gcc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 
 # some tests require numdiff which is not in openSUSE package repo
 RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
