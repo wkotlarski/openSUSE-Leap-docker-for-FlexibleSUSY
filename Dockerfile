@@ -3,7 +3,7 @@ FROM opensuse/leap:15.2
 ARG BUILD_DATE
 ARG VERSION
 
-ENV SARAH_VERSION 4.14.4
+ENV SARAH_VERSION 4.14.5
 ENV FEYNARTS_VERSION 3.11
 ENV HIMALAYA_VERSION 4.1.1
 ENV LOOPTOOLS_VERSION 2.16
@@ -39,8 +39,6 @@ RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installa
 RUN wget -q -O - https://sarah.hepforge.org/downloads/SARAH-${SARAH_VERSION}.tar.gz | tar -xzf -
 RUN mkdir -p /root/.WolframEngine/Kernel
 RUN echo "AppendTo[\$Path, \"/SARAH-${SARAH_VERSION}\"];" > /root/.WolframEngine/Kernel/init.m
-# temporary path of issue with SARAH-4.14.4
-RUN sed -i 's/If\[ValueQ\[sub\]=!=False,/If\[sub=!=Null,/' /SARAH-${SARAH_VERSION}/SARAH.m
 
 # FlexibleSUSY extras
 
