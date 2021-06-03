@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.2
+FROM opensuse/leap:15.3
 
 ARG BUILD_DATE
 ARG VERSION
