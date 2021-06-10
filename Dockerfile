@@ -54,58 +54,61 @@ RUN echo "AppendTo[\$Path, \"/fs_dependencies/mathematica/FeynArts-${FEYNARTS_VE
 
 RUN mkdir /fs_dependencies/clang
 RUN mkdir /fs_dependencies/gcc
+RUN mkdir /tmp/source
 
 # install LoopTools
-RUN cd /tmp && wget -q http://www.feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
-RUN cd /tmp && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
-RUN cd /tmp/LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/gcc/LoopTools && make && make install
-RUN rm -r /tmp/LoopTools-${LOOPTOOLS_VERSION}
-RUN cd /tmp && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
-RUN cd /tmp/LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/clang/LoopTools && make && make install
-RUN rm -r /tmp/LoopTools-${LOOPTOOLS_VERSION}*
+RUN cd /tmp/source && wget -q http://www.feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/gcc/LoopTools && make && make install
+RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}
+RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/clang/LoopTools && make && make install
+RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}*
 
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
 
 # install Collier
 # FS interface to Collier requires it to be compiled into a static library and in position independent mode
-RUN cd /tmp && wget -q -O - https://collier.hepforge.org/downloads/collier-${COLLIER_VERSION}.tar.gz | tar -xzf -
+RUN cd /tmp/source && wget -q -O - https://collier.hepforge.org/downloads/collier-${COLLIER_VERSION}.tar.gz | tar -xzf -
 # Collier cannot be compiled in parallel
-RUN cd /tmp/COLLIER-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/COLLIER .. && make && make install
-RUN rm -r /tmp/COLLIER-${COLLIER_VERSION}
+RUN cd /tmp/source/COLLIER-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/COLLIER .. && make && make install
+RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}
 
 # install Himalaya
-RUN cd /tmp && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
-RUN mkdir -p /tmp/Himalaya-${HIMALAYA_VERSION}/build
+RUN cd /tmp/source && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
+RUN mkdir -p /tmp/source/Himalaya-${HIMALAYA_VERSION}/build
 # there's a bug FindMathematica.cmake. We need libuuid-devel
 RUN zypper in --no-recommends --no-confirm libuuid-devel
 # without EIGEN3_INCLUDE_DIR cmake will not find Eigen3 if we also specify minimal version required
-RUN cd /tmp/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/Himalaya-${HIMALAYA_VERSION}/build/*
-RUN cd /tmp/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/Himalaya-${HIMALAYA_VERSION}
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}
 
 # install GM2Calc
-RUN cd /tmp && wget -q -O - https://github.com/GM2Calc/GM2Calc/archive/v${GM2Calc_VERSION}.tar.gz | tar -xzf -
-RUN mkdir /tmp/GM2Calc-${GM2Calc_VERSION}/build
-RUN cd /tmp/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/GM2Calc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}/build && mkdir /tmp/GM2Calc-${GM2Calc_VERSION}/build
-RUN cd /tmp/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/GM2Calc -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/GM2Calc-${GM2Calc_VERSION}
+RUN cd /tmp/source && wget -q -O - https://github.com/GM2Calc/GM2Calc/archive/v${GM2Calc_VERSION}.tar.gz | tar -xzf -
+RUN mkdir /tmp/source/GM2Calc-${GM2Calc_VERSION}/build
+RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/GM2Calc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && mkdir /tmp/source/GM2Calc-${GM2Calc_VERSION}/build
+RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/GM2Calc -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}
 
 # install TSIL
-RUN cd /tmp && wget -q http://www.niu.edu/spmartin/TSIL/tsil-${TSIL_VERSION}.tar.gz
-RUN cd /tmp && tar -xf tsil-${TSIL_VERSION}.tar.gz
-RUN cp -r /tmp/tsil-${TSIL_VERSION} /fs_dependencies/clang/tsil
-RUN cp -r /tmp/tsil-${TSIL_VERSION} /fs_dependencies/gcc/tsil
-RUN rm -r /tmp/tsil-${TSIL_VERSION}*
+RUN cd /tmp/source && wget -q http://www.niu.edu/spmartin/TSIL/tsil-${TSIL_VERSION}.tar.gz
+RUN cd /tmp/source && tar -xf tsil-${TSIL_VERSION}.tar.gz
+RUN cp -r /tmp/source/tsil-${TSIL_VERSION} /fs_dependencies/clang/tsil
+RUN cp -r /tmp/source/tsil-${TSIL_VERSION} /fs_dependencies/gcc/tsil
+RUN rm -r /tmp/source/tsil-${TSIL_VERSION}*
 RUN cd /fs_dependencies/clang/tsil && make CC=clang CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 RUN cd /fs_dependencies/gcc/tsil && make CC=gcc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 
 # some tests require numdiff which is not in openSUSE package repo
-RUN cd /tmp && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
-RUN cd /tmp/numdiff-5.9.0 && ./configure && make && make install
-RUN rm -r /tmp/numdiff-5.9.0
+RUN cd /tmp/source && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
+RUN cd /tmp/source/numdiff-5.9.0 && ./configure && make && make install
+RUN rm -r /tmp/source/numdiff-5.9.0
+
+RUN rm -r /tmp/source
 
 # extra packages required by tests
 RUN zypper in --no-recommends --no-confirm bc
