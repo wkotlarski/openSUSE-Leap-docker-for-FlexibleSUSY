@@ -22,7 +22,7 @@ jobs:
         env:
            VER: '0.9.0'
         run: |
-           docker build --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg VERSION=$VER -t navir/opensuseleap-for-flexiblesusy -t navir/opensuseleap-for-flexiblesusy:$VER .
+           docker build --squash --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --build-arg VERSION=$VER -t navir/opensuseleap-for-flexiblesusy -t navir/opensuseleap-for-flexiblesusy:$VER .
            docker push navir/opensuseleap-for-flexiblesusy:$VER
            # docker push navir/opensuseleap-for-flexiblesusy:latest
 
