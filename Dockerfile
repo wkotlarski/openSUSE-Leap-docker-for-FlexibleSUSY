@@ -29,7 +29,6 @@ COPY oneAPI.repo /etc/yum.repos.d
 RUN zypper addrepo https://yum.repos.intel.com/oneapi oneAPI
 RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 RUN zypper in --no-recommends --no-confirm intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-fortran
-RUN source /opt/intel/oneapi/setvars.sh
 
 # install Wolfram Engine
 # Wolfram Engine > 12.1.1 requires xz
@@ -116,7 +115,7 @@ RUN cd /fs_dependencies/clang/tsil && make CC=clang CFLAGS="-DTSIL_SIZE_LONG -O3
 RUN cd /fs_dependencies/gcc/tsil && make CC=gcc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 RUN cd /fs_dependencies/intel/tsil && source /opt/intel/oneapi/setvars.sh && make CC=icc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 
-# some tests require numdiff which is not in openSUSE package repo
+# some tests require numdiff which is not in the openSUSE package repo
 RUN cd /tmp/source && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
 RUN cd /tmp/source/numdiff-5.9.0 && ./configure && make && make install
 RUN rm -r /tmp/source/numdiff-5.9.0
