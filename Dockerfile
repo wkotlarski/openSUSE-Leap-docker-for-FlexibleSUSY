@@ -68,7 +68,7 @@ RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FS=gfortran FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/clang/LoopTools && make && make install
 RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}
 RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
-RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && source /opt/intel/oneapi/setvars.sh && CC=icc CXX=icpc FC=ifort FFLAGS=-fPIC CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/intel/LoopTools && make && make install
+RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && source /opt/intel/oneapi/setvars.sh && CC=icc CXX=icpc FC=ifort FFLAGS="-fPIC -fp-model precise" CFLAGS="-fPIC -fp-model precise" CXXFLAGS="-fPIC -fp-model precise" ./configure --prefix=/fs_dependencies/intel/LoopTools && make && make install
 RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}*
 
 # Himalaya and Collier need cmake
