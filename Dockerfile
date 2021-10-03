@@ -32,9 +32,7 @@ RUN zypper in --no-recommends --no-confirm intel-oneapi-compiler-dpcpp-cpp-and-c
 
 # install Wolfram Engine
 # Wolfram Engine > 12.1.1 requires xz
-RUN zypper in --no-recommends --no-confirm xz avahi
-RUN systemctl enable avahi-daemon
-RUN systemctl start avahi-daemon
+RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX && bash LINUX -- -auto && rm LINUX
 ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
 # remove some leftovers
@@ -42,8 +40,8 @@ RUN rm -rf applications-merged
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
-# RUN zypper in --no-confirm --no-recommends xdg-utils
-# RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+RUN zypper in --no-confirm --no-recommends xdg-utils
+RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 RUN mkdir -p /fs_dependencies/mathematica
 
