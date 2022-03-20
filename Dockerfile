@@ -8,7 +8,7 @@ ENV FEYNARTS_VERSION 3.11
 ENV HIMALAYA_VERSION 4.1.1
 ENV LOOPTOOLS_VERSION 2.16
 ENV COLLIER_VERSION 1.2.5
-ENV GM2Calc_VERSION 2.0.0
+ENV GM2Calc_VERSION 2.1.0
 ENV MATH_VERSION 13.0
 ENV TSIL_VERSION 1.45
 
@@ -22,7 +22,7 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc10-c++ gcc10-fortran clang11 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN zypper in --no-recommends --no-confirm make gcc-c++ gcc-fortran clang libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
 
 # install intel compiler suite
 COPY oneAPI.repo /etc/yum.repos.d
