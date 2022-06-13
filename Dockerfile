@@ -85,6 +85,22 @@ RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}/build/*
 RUN cd /tmp/source/COLLIER-${COLLIER_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/COLLIER -DCMAKE_Fortran_COMPILER=ifort .. && make && make install
 RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}
 
+# install HiggsTools
+RUN cd /tmp/source && git clone --branch develop --depth 1 https://gitlab.com/higgsbounds/higgstools.git
+RUN mkdir /tmp/source/higgstools/build && cd /tmp/source/higgstools/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/HiggsTools -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc .. && make -j5 && make install
+RUN rm -rf /tmp/source/higgstools/build
+RUN mkdir /tmp/source/higgstools/build && cd /tmp/source/higgstools/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/HiggsTools -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang .. && make -j5 && make install
+RUN rm -rf /tmp/source/higgstools/build
+# compilation fails with
+# /tmp/source/higgstools/build/_deps/rangev3-src/include/range/v3/detail/adl_get.hpp(103): error: incomplete type is not allowed
+#               friend constexpr auto CPP_auto_fun(get)(
+#                                     ^
+# RUN mkdir /tmp/source/higgstools/build && cd /tmp/source/higgstools/build && source /opt/intel/oneapi/setvars.sh && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/HiggsTools -DCMAKE_CXX_COMPILER=icpc -DCMAKE_C_COMPILER=icc .. && make -j5 && make install
+RUN rm -rf /tmp/source/higgstools
+
+RUN cd /fs_dependencies && git clone --branch master --depth 1 https://gitlab.com/higgsbounds/hbdataset.git
+RUN cd /fs_dependencies && git clone --branch main --depth 1 https://gitlab.com/higgsbounds/hsdataset.git
+
 # install Himalaya
 RUN cd /tmp/source && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
 RUN mkdir -p /tmp/source/Himalaya-${HIMALAYA_VERSION}/build
