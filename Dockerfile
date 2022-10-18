@@ -28,10 +28,10 @@ RUN zypper in --no-recommends --no-confirm make gcc11-c++ gcc11-fortran clang13 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-11
 
 # install intel compiler suite
-COPY oneAPI.repo /etc/yum.repos.d
-RUN zypper addrepo https://yum.repos.intel.com/oneapi oneAPI
-RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-RUN zypper in --no-recommends --no-confirm intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-fortran
+# COPY oneAPI.repo /etc/yum.repos.d
+# RUN zypper addrepo https://yum.repos.intel.com/oneapi oneAPI
+# RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+# RUN zypper in --no-recommends --no-confirm intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-fortran
 
 # install Wolfram Engine
 # Wolfram Engine > 12.1.1 requires xz
@@ -70,9 +70,9 @@ RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}
 RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && CC=clang CXX=clang++ FC=gfortran FFLAGS="-O3 -fPIC" CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/clang/LoopTools && make && make install
 RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}
-RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
-RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && source /opt/intel/oneapi/setvars.sh && CC=icc CXX=icpc FC=ifort FFLAGS="-O2 -fPIC -fp-model strict" CFLAGS="-O2 -fPIC -fp-model strict" CXXFLAGS="-O2 -fPIC -fp-model strict" ./configure --prefix=/fs_dependencies/intel/LoopTools && make && make install
-RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}*
+# RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+# RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && source /opt/intel/oneapi/setvars.sh && CC=icc CXX=icpc FC=ifort FFLAGS="-O2 -fPIC -fp-model strict" CFLAGS="-O2 -fPIC -fp-model strict" CXXFLAGS="-O2 -fPIC -fp-model strict" ./configure --prefix=/fs_dependencies/intel/LoopTools && make && make install
+# RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}*
 
 # Himalaya and Collier need cmake
 RUN zypper in --no-recommends --no-confirm cmake
@@ -83,7 +83,7 @@ RUN cd /tmp/source && wget -q -O - https://collier.hepforge.org/downloads/collie
 # Collier cannot be compiled in parallel
 RUN cd /tmp/source/COLLIER-${COLLIER_VERSION}/build && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/COLLIER -DCMAKE_Fortran_COMPILER=gfortran .. && make && make install
 RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}/build/*
-RUN cd /tmp/source/COLLIER-${COLLIER_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/COLLIER -DCMAKE_Fortran_COMPILER=ifort .. && make && make install
+# RUN cd /tmp/source/COLLIER-${COLLIER_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake -Dstatic=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/COLLIER -DCMAKE_Fortran_COMPILER=ifort .. && make && make install
 RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}
 
 # install HiggsTools
@@ -111,8 +111,8 @@ RUN zypper in --no-recommends --no-confirm libuuid-devel
 RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
 RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
-RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/Himalaya -DCMAKE_CXX_COMPILER=icpc -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+# RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
+# RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/Himalaya -DCMAKE_CXX_COMPILER=icpc -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}
 
 # install GM2Calc
@@ -121,18 +121,18 @@ RUN mkdir /tmp/source/GM2Calc-${GM2Calc_VERSION}/build
 RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/GM2Calc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}/build/*
 RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/GM2Calc -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
-RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}/build/*
-RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/GM2Calc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+# RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}/build/*
+# RUN cd /tmp/source/GM2Calc-${GM2Calc_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/GM2Calc -DCMAKE_CXX_COMPILER=icpc -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}
 
 # install TSIL
 RUN cd /tmp/source && wget -q http://www.niu.edu/spmartin/TSIL/tsil-${TSIL_VERSION}.tar.gz
 RUN cd /tmp/source && tar -xf tsil-${TSIL_VERSION}.tar.gz
-RUN for comp in gcc clang intel; do cp -r /tmp/source/tsil-${TSIL_VERSION} /fs_dependencies/$comp/tsil; done
+RUN for comp in gcc clang; do cp -r /tmp/source/tsil-${TSIL_VERSION} /fs_dependencies/$comp/tsil; done
 RUN rm -r /tmp/source/tsil-${TSIL_VERSION}*
 RUN cd /fs_dependencies/clang/tsil && make CC=clang CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 RUN cd /fs_dependencies/gcc/tsil && make CC=gcc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
-RUN cd /fs_dependencies/intel/tsil && source /opt/intel/oneapi/setvars.sh && make CC=icc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
+# RUN cd /fs_dependencies/intel/tsil && source /opt/intel/oneapi/setvars.sh && make CC=icc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 
 # some tests require numdiff which is not in the openSUSE package repo
 RUN cd /tmp/source && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
