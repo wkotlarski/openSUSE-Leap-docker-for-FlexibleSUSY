@@ -11,7 +11,9 @@ ENV COLLIER_VERSION 1.2.7
 ENV GM2Calc_VERSION 2.1.0
 ENV MATH_VERSION 13.2
 ENV TSIL_VERSION 1.45
-ENV HIGGSTOOLS_VERSION 1.0
+ENV HIGGSTOOLS_VERSION 1.0.1
+ENV HSDATASET_VERSION 1.0
+ENV HBDATASET_VERSION 1.0
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -99,8 +101,8 @@ RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
 # RUN mkdir /tmp/source/higgstools/build && cd /tmp/source/higgstools/build && source /opt/intel/oneapi/setvars.sh && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/HiggsTools -DCMAKE_CXX_COMPILER=icpc -DCMAKE_C_COMPILER=icc .. && make -j5 && make install
 RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}
 
-RUN cd /fs_dependencies && git clone --branch master --depth 1 https://gitlab.com/higgsbounds/hbdataset.git
-RUN cd /fs_dependencies && git clone --branch main --depth 1 https://gitlab.com/higgsbounds/hsdataset.git
+RUN cd /fs_dependencies && wget -q -O - https://gitlab.com/higgsbounds/hbdataset/-/archive/v${HBDATASET_VERSION}/hbdataset-v${HBDATASET_VERSION}.tar.gz | tar -xzf -
+RUN cd /fs_dependencies && wget -q -O - https://gitlab.com/higgsbounds/hsdataset/-/archive/v${HSDATASET_VERSION}/hsdataset-v${HSDATASET_VERSION}.tar.gz | tar -xzf -
 
 # install Himalaya
 RUN cd /tmp/source && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
