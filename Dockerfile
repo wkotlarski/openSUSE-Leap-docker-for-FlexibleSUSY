@@ -13,7 +13,7 @@ ENV MATH_VERSION 13.2
 ENV TSIL_VERSION 1.45
 ENV HIGGSTOOLS_VERSION 1.0.1
 ENV HSDATASET_VERSION 1.0
-ENV HBDATASET_VERSION 1.0
+ENV HBDATASET_VERSION 1.2
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
