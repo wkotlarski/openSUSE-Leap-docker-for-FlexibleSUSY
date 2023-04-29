@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.4
+FROM opensuse/leap:15.5
 
 ARG BUILD_DATE
 ARG VERSION
@@ -25,9 +25,9 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc11-c++ gcc11-fortran clang13 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN zypper in --no-recommends --no-confirm make gcc12-c++ gcc12-fortran clang15 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
 # clang automatically triggers update-alternatives, I don't know why gcc does not
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-11
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-12
 
 # install intel compiler suite
 # COPY oneAPI.repo /etc/yum.repos.d
