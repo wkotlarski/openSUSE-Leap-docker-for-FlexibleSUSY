@@ -23,7 +23,7 @@ jobs:
         env:
            VER: '0.16.0'
         with:
-          push: true
+          push: ${{ github.ref == 'refs/heads/master' }}
           tags: navir/opensuseleap-for-flexiblesusy:latest,navir/opensuseleap-for-flexiblesusy:${{env.VER}}
           build-args: BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ'),VERSION=${{env.VER}}
 
