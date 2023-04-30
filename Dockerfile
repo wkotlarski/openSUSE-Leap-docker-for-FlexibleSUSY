@@ -110,9 +110,9 @@ RUN mkdir -p /tmp/source/Himalaya-${HIMALAYA_VERSION}/build
 # there's a bug FindMathematica.cmake. We need libuuid-devel
 RUN zypper in --no-recommends --no-confirm libuuid-devel
 # without EIGEN3_INCLUDE_DIR cmake will not find Eigen3 if we also specify minimal version required
-RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 -DCMAKE_POSITION_INDEPENDENT_CODE=ON && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
-RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 -DCMAKE_POSITION_INDEPENDENT_CODE=ON && make -j2 && make install
 # RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
 # RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/Himalaya -DCMAKE_CXX_COMPILER=icpc -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}
