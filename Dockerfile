@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.4
+FROM opensuse/leap:15.5
 
 ARG BUILD_DATE
 ARG VERSION
@@ -25,9 +25,9 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc11-c++ gcc11-fortran clang13 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN zypper in --no-recommends --no-confirm make gcc12-c++ gcc12-fortran clang15 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
 # clang automatically triggers update-alternatives, I don't know why gcc does not
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-11
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-12
 
 # install intel compiler suite
 # COPY oneAPI.repo /etc/yum.repos.d
@@ -110,9 +110,9 @@ RUN mkdir -p /tmp/source/Himalaya-${HIMALAYA_VERSION}/build
 # there's a bug FindMathematica.cmake. We need libuuid-devel
 RUN zypper in --no-recommends --no-confirm libuuid-devel
 # without EIGEN3_INCLUDE_DIR cmake will not find Eigen3 if we also specify minimal version required
-RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/Himalaya -DCMAKE_CXX_COMPILER=g++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 -DCMAKE_POSITION_INDEPENDENT_CODE=ON && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
-RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
+RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/Himalaya -DCMAKE_CXX_COMPILER=clang++ -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 -DCMAKE_POSITION_INDEPENDENT_CODE=ON && make -j2 && make install
 # RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}/build/*
 # RUN cd /tmp/source/Himalaya-${HIMALAYA_VERSION}/build && source /opt/intel/oneapi/setvars.sh && cmake .. -DCMAKE_INSTALL_PREFIX=/fs_dependencies/intel/Himalaya -DCMAKE_CXX_COMPILER=icpc -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 && make -j2 && make install
 RUN rm -r /tmp/source/Himalaya-${HIMALAYA_VERSION}
