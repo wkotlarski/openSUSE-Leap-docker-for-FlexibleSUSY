@@ -21,7 +21,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         env:
-           VER: '0.17.0'
+           VER: '0.17.1'
         with:
           push: ${{ github.ref == 'refs/heads/master' }}
           tags: navir/opensuseleap-for-flexiblesusy:latest,navir/opensuseleap-for-flexiblesusy:${{env.VER}}
