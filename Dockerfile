@@ -46,7 +46,7 @@ RUN rm -rf applications-merged
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-# RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 RUN mkdir -p /fs_dependencies/mathematica
 
