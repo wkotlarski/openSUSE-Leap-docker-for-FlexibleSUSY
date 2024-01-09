@@ -14,6 +14,7 @@ ENV TSIL_VERSION 1.45
 ENV HIGGSTOOLS_VERSION 1.1.3
 ENV HSDATASET_VERSION 1.1
 ENV HBDATASET_VERSION 1.4
+ENV LILITH_VERSION 2.1db22.01-beta.1
 
 LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
@@ -103,6 +104,11 @@ RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}
 
 RUN cd /fs_dependencies && wget -q -O - https://gitlab.com/higgsbounds/hbdataset/-/archive/v${HBDATASET_VERSION}/hbdataset-v${HBDATASET_VERSION}.tar.gz | tar -xzf -
 RUN cd /fs_dependencies && wget -q -O - https://gitlab.com/higgsbounds/hsdataset/-/archive/v${HSDATASET_VERSION}/hsdataset-v${HSDATASET_VERSION}.tar.gz | tar -xzf -
+
+# install Lilith
+RUN cd /tmp/source && wget -q -O - https://github.com/sabinekraml/Lilith-2/archive/refs/tags/v${LILITH_VERSION}.tar.gz | tar -xzf - && mv Lilith-2-${LILITH_VERSION} /fs_dependencies/Lilith
+RUN zypper in --no-recommends --no-confirm python311-devel
+RUN update-alternatives --install /usr/bin/python3-config python3-config /usr/bin/python3.11-config 100
 
 # install Himalaya
 RUN cd /tmp/source && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
