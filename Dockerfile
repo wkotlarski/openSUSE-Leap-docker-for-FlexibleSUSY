@@ -9,7 +9,7 @@ ENV HIMALAYA_VERSION 4.2.2
 ENV LOOPTOOLS_VERSION 2.16
 ENV COLLIER_VERSION 1.2.8
 ENV GM2Calc_VERSION 2.2.0
-ENV MATH_VERSION 13.3
+ENV MATH_VERSION 14.0
 ENV TSIL_VERSION 1.45
 ENV HIGGSTOOLS_VERSION 1.1.3
 ENV HSDATASET_VERSION 1.1
@@ -39,7 +39,7 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /
 # install Wolfram Engine
 # Wolfram Engine > 12.1.1 requires xz
 RUN zypper in --no-recommends --no-confirm xz
-RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=13.3&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
+RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
 ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
 # remove some leftovers
 RUN rm -rf applications-merged
