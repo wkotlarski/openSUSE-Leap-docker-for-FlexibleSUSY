@@ -59,7 +59,7 @@ RUN echo "AppendTo[\$Path, \"/fs_dependencies/mathematica/SARAH-${SARAH_VERSION}
 # FlexibleSUSY extras
 
 # install FeynArts
-RUN cd /fs_dependencies/mathematica && wget -q -O - http://www.feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
+RUN cd /fs_dependencies/mathematica && wget -q -O - https://feynarts.de/FeynArts-${FEYNARTS_VERSION}.tar.gz | tar -xzf -
 RUN echo "AppendTo[\$Path, \"/fs_dependencies/mathematica/FeynArts-${FEYNARTS_VERSION}\"];" >> /root/.WolframEngine/Kernel/init.m
 
 RUN mkdir -p /fs_dependencies/clang /fs_dependencies/gcc /fs_dependencies/intel
