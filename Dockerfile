@@ -66,7 +66,7 @@ RUN mkdir -p /fs_dependencies/clang /fs_dependencies/gcc /fs_dependencies/intel
 RUN mkdir /tmp/source
 
 # install LoopTools
-RUN cd /tmp/source && wget -q http://www.feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
+RUN cd /tmp/source && wget -q https://feynarts.de/looptools/LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd /tmp/source && tar -xf LoopTools-${LOOPTOOLS_VERSION}.tar.gz
 RUN cd /tmp/source/LoopTools-${LOOPTOOLS_VERSION} && CC=gcc CXX=g++ FC=gfortran FFLAGS="-O3 -fPIC" CFLAGS=-fPIC CXXFLAGS=-fPIC ./configure --prefix=/fs_dependencies/gcc/LoopTools && make && make install
 RUN rm -r /tmp/source/LoopTools-${LOOPTOOLS_VERSION}
