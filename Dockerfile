@@ -22,7 +22,7 @@ LABEL version = $VERSION
 LABEL build-date = $BUILD_DATE
 
 # update the default image
-RUN zypper ref && zypper dup --no-confirm --no-recommends
+RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
