@@ -16,7 +16,7 @@ ENV HSDATASET_VERSION 1.1
 ENV HBDATASET_VERSION 1.6
 ENV LILITH_VERSION 2.1db22.01-beta.1
 
-LABEL maintainer = "wojciech.kotlarski@tu-dresden.de"
+LABEL maintainer = "wojciech.kotlarski@ncbj.gov.pl"
 LABEL description = "openSUSY Leap docker image for FlexibleSUSY"
 LABEL version = $VERSION
 LABEL build-date = $BUILD_DATE
