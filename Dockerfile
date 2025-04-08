@@ -9,7 +9,7 @@ ENV HIMALAYA_VERSION 4.2.3
 ENV LOOPTOOLS_VERSION 2.16
 ENV COLLIER_VERSION 1.2.8
 ENV GM2Calc_VERSION 2.3.1
-ENV MATH_VERSION 14.2
+ENV MATH_VERSION 14.2.1
 ENV TSIL_VERSION 1.45
 ENV HIGGSTOOLS_VERSION 1.2
 ENV HSDATASET_VERSION 1.1
@@ -40,14 +40,15 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /
 # Wolfram Engine > 12.1.1 requires xz
 RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
-ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
+#ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
+ENV PATH="/usr/local/Wolfram/WolframEngine/14.2/Executables:${PATH}"
 # remove some leftovers
 RUN rm -rf applications-merged
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-RUN rpm -i /usr/local/Wolfram/WolframEngine/${MATH_VERSION}/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+RUN rpm -i /usr/local/Wolfram/WolframEngine/*/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 RUN mkdir -p /fs_dependencies/mathematica
 
