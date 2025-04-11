@@ -40,8 +40,10 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /
 # Wolfram Engine > 12.1.1 requires xz
 RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
-#ENV PATH="/usr/local/Wolfram/WolframEngine/${MATH_VERSION}/Executables:${PATH}"
+# cannot use $MATH_VERSION in this path determination
+# because for MATH_VERSION a.b.c the path is a.b
 ENV PATH="/usr/local/Wolfram/WolframEngine/14.2/Executables:${PATH}"
+RUN echo "${PATH}"
 # remove some leftovers
 RUN rm -rf applications-merged
 
