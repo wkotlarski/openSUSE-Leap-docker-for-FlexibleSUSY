@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.6
+FROM opensuse/leap:16.0
 
 ARG BUILD_DATE
 ARG VERSION
@@ -9,8 +9,8 @@ ENV HIMALAYA_VERSION 4.2.3
 ENV LOOPTOOLS_VERSION 2.16
 ENV COLLIER_VERSION 1.2.8
 ENV GM2Calc_VERSION 2.3.1
-ENV MATH_VERSION 14.2.1
-ENV TSIL_VERSION 1.45
+ENV MATH_VERSION 14.3
+ENV TSIL_VERSION 1.46
 ENV HIGGSTOOLS_VERSION 1.2
 ENV HSDATASET_VERSION 1.1
 ENV HBDATASET_VERSION 1.6
@@ -26,9 +26,9 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc12-c++ gcc12-fortran clang15 libboost_headers1_75_0-devel libboost_test1_75_0-devel gsl-devel eigen3-devel sqlite3-devel
+RUN zypper in --no-recommends --no-confirm make gcc15-c++ gcc15-fortran clang19 libboost_headers1_86_0-devel libboost_test1_86_0-devel gsl-devel eigen3-devel sqlite3-devel range-v3-devel
 # clang automatically triggers update-alternatives, I don't know why gcc does not
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-12
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 --slave /usr/bin/g++ g++ /usr/bin/g++-15 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-15
 
 # install intel compiler suite
 # COPY oneAPI.repo /etc/yum.repos.d
@@ -50,7 +50,7 @@ RUN rm -rf applications-merged
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-RUN rpm -i /usr/local/Wolfram/WolframEngine/*/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+#RUN rpm -i /usr/local/Wolfram/WolframEngine/*/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 RUN mkdir -p /fs_dependencies/mathematica
 
