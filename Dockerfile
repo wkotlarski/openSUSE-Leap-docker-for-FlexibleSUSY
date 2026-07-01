@@ -138,8 +138,8 @@ RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}
 # install TSIL
 RUN cd /tmp/source && wget -q http://www.niu.edu/spmartin/TSIL/tsil-${TSIL_VERSION}.tar.gz
 RUN cd /tmp/source && tar -xf tsil-${TSIL_VERSION}.tar.gz
-RUN for comp in gcc clang; do cp -r /tmp/source/tsil-${TSIL_VERSION} /fs_dependencies/$comp/tsil; done
-RUN rm -r /tmp/source/tsil-${TSIL_VERSION}*
+RUN for comp in gcc clang; do cp -r /tmp/source/TSIL-${TSIL_VERSION} /fs_dependencies/$comp/tsil; done
+RUN rm -r /tmp/source/TSIL-${TSIL_VERSION}*
 RUN cd /fs_dependencies/clang/tsil && make CC=clang CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 RUN cd /fs_dependencies/gcc/tsil && make CC=gcc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 # RUN cd /fs_dependencies/intel/tsil && source /opt/intel/oneapi/setvars.sh && make CC=icc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
