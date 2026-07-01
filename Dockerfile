@@ -93,9 +93,9 @@ RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}
 
 # install HiggsTools
 RUN cd /tmp/source && wget -q -O - https://gitlab.com/higgsbounds/higgstools/-/archive/v${HIGGSTOOLS_VERSION}/higgstools-v${HIGGSTOOLS_VERSION}.tar.gz | tar -xzf -
-RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/HiggsTools -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc .. && make -j5 && make install
+RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/HiggsTools -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j5 && make install
 RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
-RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/HiggsTools -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang .. && make -j5 && make install
+RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/HiggsTools -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j5 && make install
 RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
 # compilation fails with
 # /tmp/source/higgstools/build/_deps/rangev3-src/include/range/v3/detail/adl_get.hpp(103): error: incomplete type is not allowed
