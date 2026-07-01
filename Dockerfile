@@ -9,7 +9,7 @@ ENV HIMALAYA_VERSION 4.2.3
 ENV LOOPTOOLS_VERSION 2.16
 ENV COLLIER_VERSION 1.2.9
 ENV GM2Calc_VERSION 2.3.1
-ENV MATH_VERSION 14.3
+ENV MATH_VERSION 15.0
 ENV TSIL_VERSION 1.46
 ENV HIGGSTOOLS_VERSION 1.2
 ENV HSDATASET_VERSION 1.1
@@ -42,8 +42,7 @@ RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
 # cannot use $MATH_VERSION in this path determination
 # because for MATH_VERSION a.b.c the path is a.b
-ENV PATH="$/usr/local/Wolfram/WolframEngine/14.2/Executables:${PATH}"
-RUN echo "${PATH}"
+ENV PATH="$/usr/local/Wolfram/WolframEngine/15.0/Executables:${PATH}"
 # remove some leftovers
 RUN rm -rf applications-merged
 
