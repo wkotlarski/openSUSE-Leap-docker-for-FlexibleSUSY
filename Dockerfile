@@ -26,7 +26,7 @@ RUN zypper dup --no-confirm --no-recommends
 
 # which is needed by FormCalc's compile script
 RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc15-c++ gcc15-fortran clang19 libboost_headers1_86_0-devel libboost_test1_86_0-devel gsl-devel eigen3-devel sqlite3-devel range-v3-devel
+RUN zypper in --no-recommends --no-confirm make gcc15-c++ gcc15-fortran clang19 libboost_headers1_86_0-devel libboost_test1_86_0-devel gsl-devel eigen3-devel sqlite3-devel 
 # clang automatically triggers update-alternatives, I don't know why gcc does not
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 --slave /usr/bin/g++ g++ /usr/bin/g++-15 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-15
 
@@ -95,8 +95,8 @@ RUN rm -r /tmp/source/COLLIER-${COLLIER_VERSION}
 RUN cd /tmp/source && wget -q -O - https://gitlab.com/higgsbounds/higgstools/-/archive/v${HIGGSTOOLS_VERSION}/higgstools-v${HIGGSTOOLS_VERSION}.tar.gz | tar -xzf -
 RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/gcc/HiggsTools -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j5 && make install
 RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
-RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/HiggsTools -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j5 && make install
-RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
+#RUN mkdir /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cd /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build && cmake -DCMAKE_INSTALL_PREFIX=/fs_dependencies/clang/HiggsTools -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j5 && make install
+#RUN rm -rf /tmp/source/higgstools-v${HIGGSTOOLS_VERSION}/build
 # compilation fails with
 # /tmp/source/higgstools/build/_deps/rangev3-src/include/range/v3/detail/adl_get.hpp(103): error: incomplete type is not allowed
 #               friend constexpr auto CPP_auto_fun(get)(
