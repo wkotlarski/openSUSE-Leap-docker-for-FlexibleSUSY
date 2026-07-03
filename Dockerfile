@@ -109,8 +109,8 @@ RUN cd /fs_dependencies && wget -q -O - https://gitlab.com/higgsbounds/hsdataset
 
 # install Lilith
 RUN cd /tmp/source && wget -q -O - https://github.com/sabinekraml/Lilith-2/archive/refs/heads/master.tar.gz | tar -xzf - && mv Lilith-2-master /fs_dependencies/Lilith
-RUN zypper in --no-recommends --no-confirm python311-devel
-RUN update-alternatives --install /usr/bin/python3-config python3-config /usr/bin/python3.11-config 100
+RUN zypper in --no-recommends --no-confirm python313-devel
+RUN update-alternatives --install /usr/bin/python3-config python3-config /usr/bin/python3.13-config 100
 
 # install Himalaya
 RUN cd /tmp/source && wget -q -O - https://github.com/Himalaya-Library/Himalaya/archive/${HIMALAYA_VERSION}.tar.gz | tar -xzf -
