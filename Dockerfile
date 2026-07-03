@@ -22,11 +22,7 @@ LABEL version = $VERSION
 LABEL build-date = $BUILD_DATE
 
 # update the default image
-RUN zypper dup --no-confirm --no-recommends
-
-# which is needed by FormCalc's compile script
-RUN zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck
-RUN zypper in --no-recommends --no-confirm make gcc15-c++ gcc15-fortran clang19 libboost_headers1_86_0-devel libboost_test1_86_0-devel gsl-devel eigen3-devel sqlite3-devel 
+RUN zypper dup --no-confirm --no-recommends && zypper in --no-recommends --no-confirm glibc-locale tar gzip wget which git vim emacs ruby curl ShellCheck make gcc15-c++ gcc15-fortran clang19 libboost_headers1_86_0-devel libboost_test1_86_0-devel gsl-devel eigen3-devel sqlite3-devel bc
 # clang automatically triggers update-alternatives, I don't know why gcc does not
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 --slave /usr/bin/g++ g++ /usr/bin/g++-15 --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-15
 
@@ -37,8 +33,6 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 --slave /
 # RUN zypper in --no-recommends --no-confirm intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-compiler-fortran
 
 # install Wolfram Engine
-# Wolfram Engine > 12.1.1 requires xz
-RUN zypper in --no-recommends --no-confirm xz
 RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
 # cannot use $MATH_VERSION in this path determination
 # because for MATH_VERSION a.b.c the path is a.b
@@ -150,8 +144,5 @@ RUN cd /tmp/source/numdiff-5.9.0 && ./configure && make && make install
 RUN rm -r /tmp/source/numdiff-5.9.0
 
 RUN rm -r /tmp/source
-
-# extra packages required by tests
-RUN zypper in --no-recommends --no-confirm bc
 
 RUN zypper clean -a
