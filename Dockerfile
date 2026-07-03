@@ -139,9 +139,9 @@ RUN rm -r /tmp/source/GM2Calc-${GM2Calc_VERSION}
 # RUN cd /fs_dependencies/intel/tsil && source /opt/intel/oneapi/setvars.sh && make CC=icc CFLAGS="-DTSIL_SIZE_LONG -O3 -funroll-loops -fPIC"
 
 # some tests require numdiff which is not in the openSUSE package repo
-RUN cd /tmp/source && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
-RUN cd /tmp/source/numdiff-5.9.0 && ./configure && make && make install
-RUN rm -r /tmp/source/numdiff-5.9.0
+#RUN cd /tmp/source && wget -q -O - http://mirror.netcologne.de/savannah/numdiff/numdiff-5.9.0.tar.gz | tar -xzf -
+#RUN cd /tmp/source/numdiff-5.9.0 && ./configure && make && make install
+#RUN rm -r /tmp/source/numdiff-5.9.0
 
 RUN rm -r /tmp/source
 
