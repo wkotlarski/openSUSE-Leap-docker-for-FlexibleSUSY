@@ -36,14 +36,14 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100 --slave /
 RUN wget -q -O LINUX.sh "https://account.wolfram.com/dl/WolframEngine?version=${MATH_VERSION}&platform=Linux" && bash LINUX.sh -- -auto && rm LINUX.sh
 # cannot use $MATH_VERSION in this path determination
 # because for MATH_VERSION a.b.c the path is a.b
-ENV PATH="$/usr/local/Wolfram/WolframEngine/15.0/Executables:${PATH}"
+ENV PATH="/usr/local/Wolfram/WolframEngine/15.0/Executables:${PATH}"
 # remove some leftovers
 RUN rm -rf applications-merged
 
 # activation of Wolfram Engine works only though wolframscript but it's not installed automatically on openSUSE
 # installing this rpm tries to call xdm-mime
 RUN zypper in --no-confirm --no-recommends xdg-utils
-#RUN rpm -i /usr/local/Wolfram/WolframEngine/*/SystemFiles/Installation/wolframscript-*.x86_64.rpm
+RUN rpm -i --replacefiles /usr/local/Wolfram/WolframEngine/*/SystemFiles/Installation/wolframscript-*.x86_64.rpm
 
 RUN mkdir -p /fs_dependencies/mathematica
 
